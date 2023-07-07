@@ -7,6 +7,6 @@ public class HighScoresController : MonoBehaviour {
     }
 
     public void GoToMainMenuScene() {
-        
+        SceneManager.LoadScene(ScenesNames.MainMenuScene);
     }
 }
