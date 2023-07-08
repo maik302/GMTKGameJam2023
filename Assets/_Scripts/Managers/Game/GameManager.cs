@@ -11,11 +11,10 @@ public class GameManager : MonoBehaviour {
     private GameStates _currentGameState;
 
     private void Start() {
-        StartCoroutine(ChangeGameState(GameStates.START));
+        this.StartTaskAfter(_secondsBetweenStates, ChangeGameState, GameStates.START);
     }
 
-    private IEnumerator ChangeGameState(GameStates gameState) {
-        yield return new WaitForSeconds(_secondsBetweenStates);
+    private void ChangeGameState(GameStates gameState) {
         _currentGameState = gameState;
         Messenger.Broadcast(GameStateUtils.GetGameStateEvent(gameState));
     }
