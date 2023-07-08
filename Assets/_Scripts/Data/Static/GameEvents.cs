@@ -3,4 +3,5 @@ public static class GameEvents {
     public const string InitActionStateEvent = "InitActionStateEvent"; 
     public const string InitUpdateStateEvent = "InitUpdateStateEvent"; 
     public const string InitFinishOkStateEvent = "InitFinishOkStateEvent"; 
+    public const string InitFinishKoStateEvent = "InitFinishKoStateEvent"; 
 }
