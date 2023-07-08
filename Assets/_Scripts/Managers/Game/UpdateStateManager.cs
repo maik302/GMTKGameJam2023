@@ -1,14 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class UpdateStateManager : MonoBehaviour, IGameStateManager {
+
+    [SerializeField]
+    private TextMeshProUGUI _elapsedTimeCounter;
 
     private List<ActionStateEvents> _actionEvents;
     private int _playerLives;
     private bool _isStateActive = false;
     private int _currentActionIndex = 0;
+    private float _elapsedTimeInSeconds;
 
     private void OnEnable() {
         Messenger<LevelConfiguration>.AddListener(GameEvents.InitUpdateStateEvent, SetUpUpdateState);
@@ -16,6 +22,17 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
 
     private void OnDisable() {
         Messenger<LevelConfiguration>.RemoveListener(GameEvents.InitUpdateStateEvent, SetUpUpdateState);
+    }
+
+    private void OnAwake() {
+        _elapsedTimeInSeconds = 0f;
+    }
+
+    private void Update() {
+        if (_isStateActive) {
+            _elapsedTimeInSeconds += Time.deltaTime;
+            _elapsedTimeCounter.text = TimeSpan.FromSeconds(_elapsedTimeInSeconds).ToString(@"mm\:ss\:ff");
+        }
     }
 
     public void FinishState() {
