@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour {
     [Header("General Game Settings")]
     [SerializeField]
     private TextMeshProUGUI _currentLevelText;
+    [SerializeField]
+    private GameObject _finishOkUI;
 
     [Header("Game States configuration")]
     [SerializeField]
@@ -23,17 +25,18 @@ public class GameManager : MonoBehaviour {
 
     private void OnEnable() {
         Messenger.AddListener(GameEvents.FinishGameStateEvent, StartNextGameState);
-        Messenger.AddListener(GameEvents.FinishUpdateStateOkEvent, FinishUpdateStateOkHandler);
-        Messenger.AddListener(GameEvents.FinishUpdateStateKoEvent, FinishUpdateStateKoHandler);
+        Messenger<float>.AddListener(GameEvents.FinishUpdateStateOkEvent, FinishUpdateStateOkHandler);
+        Messenger<float>.AddListener(GameEvents.FinishUpdateStateKoEvent, FinishUpdateStateKoHandler);
     }
 
     private void OnDisable() {
         Messenger.RemoveListener(GameEvents.FinishGameStateEvent, StartNextGameState);
-        Messenger.RemoveListener(GameEvents.FinishUpdateStateOkEvent, FinishUpdateStateOkHandler);
-        Messenger.RemoveListener(GameEvents.FinishUpdateStateKoEvent, FinishUpdateStateKoHandler);
+        Messenger<float>.RemoveListener(GameEvents.FinishUpdateStateOkEvent, FinishUpdateStateOkHandler);
+        Messenger<float>.RemoveListener(GameEvents.FinishUpdateStateKoEvent, FinishUpdateStateKoHandler);
     }
 
     private void Start() {
+        _finishOkUI.SetActive(false);
         _currentGameState = GameStates.INIT;
         _currentLevelIndex = 0;
         this.StartTaskAfter(_secondsBetweenStates, StartNextGameState);
@@ -84,16 +87,21 @@ public class GameManager : MonoBehaviour {
         Messenger<LevelConfiguration>.Broadcast(GameStateUtils.GetInitGameStateEvent(gameState), levelConfiguration);
     }
 
-    private void FinishUpdateStateOkHandler() {
+    private void FinishUpdateStateOkHandler(float elapsedTimeInSeconds) {
+        void ChangeToFinishOkGameState(float elapsedTimeInSeconds, int currentLevelIndex) {
+            _currentGameState = GameStates.FINISH_OK;
+            Messenger<float, int>.Broadcast(GameStateUtils.GetInitGameStateEvent(GameStates.FINISH_OK), elapsedTimeInSeconds, currentLevelIndex);
+        }
+
         _currentLevelIndex++;
         if (_currentLevelIndex >= _levels.Count) {
-            ChangeGameState(GameStates.FINISH_OK);
+            ChangeToFinishOkGameState(elapsedTimeInSeconds, _currentLevelIndex);
         } else {
             StartNextGameState();
         }
     }
 
-    private void FinishUpdateStateKoHandler() {
+    private void FinishUpdateStateKoHandler(float elapsedTimeInSeconds) {
         ChangeGameState(GameStates.FINISH_KO);
     }
 }

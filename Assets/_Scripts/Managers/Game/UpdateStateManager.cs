@@ -146,12 +146,12 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
 
     private void FinishUpdateStateOk() {
         FinishState();
-        Messenger.Broadcast(GameEvents.FinishUpdateStateOkEvent);
+        Messenger<float>.Broadcast(GameEvents.FinishUpdateStateOkEvent, _elapsedTimeInSeconds);
     }
 
     private void FinishUpdateStateKo() {
         FinishState();
-        Messenger.Broadcast(GameEvents.FinishUpdateStateKoEvent);
+        Messenger<float>.Broadcast(GameEvents.FinishUpdateStateKoEvent, _elapsedTimeInSeconds);
     }
 
     private void ChangePlayerSprite(Sprite sprite) {
