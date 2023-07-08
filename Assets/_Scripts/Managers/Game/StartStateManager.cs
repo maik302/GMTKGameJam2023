@@ -22,8 +22,7 @@ public class StartStateManager : MonoBehaviour, IGameStateManager {
     }
 
     public void StartState() {
-        //TODO
-        Debug.Log($"The START state has started!");
+        
     }
 
     public void SetUpStartState(LevelConfiguration levelConfiguration) {

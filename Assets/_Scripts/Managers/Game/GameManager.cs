@@ -16,29 +16,39 @@ public class GameManager : MonoBehaviour {
     private GameStates _currentGameState;
 
     private void OnEnable() {
-        Messenger<GameStates>.AddListener(GameEvents.FinishGameStateEvent, HandleFinishedState);
+        Messenger<GameStates>.AddListener(GameEvents.FinishGameStateEvent, StartNextGameState);
     }
 
     private void OnDisable() {
-        Messenger<GameStates>.RemoveListener(GameEvents.FinishGameStateEvent, HandleFinishedState);
+        Messenger<GameStates>.RemoveListener(GameEvents.FinishGameStateEvent, StartNextGameState);
     }
 
     private void Start() {
-        this.StartTaskAfter(_secondsBetweenStates, StartLevel, _levels[0]);
+        this.StartTaskAfter(_secondsBetweenStates, StartNextGameState, GameStates.START);
     }
 
-    private void StartLevel(LevelConfiguration levelConfiguration) {
-        Messenger<LevelConfiguration>.Broadcast(GameEvents.InitStartStateEvent, levelConfiguration);
+    private void StartNextGameState(GameStates nextGameState) {
+        switch (nextGameState) {
+            case GameStates.START:
+            case GameStates.ACTION: {
+                ChangeGameState(nextGameState, _levels[0]);
+                break;
+            }
+
+            default: {
+                ChangeGameState(nextGameState);
+                break;
+            }
+        }
     }
 
-    private void HandleFinishedState(GameStates nextGameState) {
-        void ChangeGameState(GameStates gameState) {
-            _currentGameState = gameState;
-            Messenger.Broadcast(GameStateUtils.GetInitGameStateEvent(gameState));
-        }
+    private void ChangeGameState(GameStates gameState) {
+        _currentGameState = gameState;
+        Messenger.Broadcast(GameStateUtils.GetInitGameStateEvent(gameState));
+    }
 
-        if (nextGameState != GameStates.START) {
-            ChangeGameState(nextGameState);
-        }
+    private void ChangeGameState(GameStates gameState, LevelConfiguration levelConfiguration) {
+        _currentGameState = gameState;
+        Messenger<LevelConfiguration>.Broadcast(GameStateUtils.GetInitGameStateEvent(gameState), levelConfiguration);
     }
 }
