@@ -616,6 +616,10 @@ MonoBehaviour:
   _secondsToWaitForStateChange: 1
   _heroHealthBar: {fileID: 1912835912}
   _enemiesHealthBar: {fileID: 497892346}
+  _monsters:
+  - {fileID: 2005495477}
+  - {fileID: 2042515758}
+  - {fileID: 1782955305}
 --- !u!1 &948436949
 GameObject:
   m_ObjectHideFlags: 0
@@ -1012,10 +1016,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e88eba21d35d1d448917e33b495e3315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _secondsBetweenStates: 5
+  _secondsBetweenStates: 1
   _levels:
   - PlayerLives: 3
-    ActionEvents: 00000000010000000200000003000000
+    ActionEvents: 03000000
+    TimeBetweenEachAction: 1
+    HeroMaxHP: 5
+  - PlayerLives: 3
+    ActionEvents: 030000000300000003000000
+    TimeBetweenEachAction: 1
+    HeroMaxHP: 5
+  - PlayerLives: 3
+    ActionEvents: 0300000003000000
     TimeBetweenEachAction: 1
     HeroMaxHP: 5
 --- !u!1 &1372863293

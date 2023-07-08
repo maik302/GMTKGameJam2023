@@ -52,7 +52,12 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
 
     public void FinishState() {
         ReturnToIdle();
+        HideOverlayLayer();
         _isStateActive = false;
+    }
+
+    private void HideOverlayLayer() {
+        _outerGameElementsContainer.SetActive(false);
     }
 
     public void StartState() {
@@ -108,14 +113,18 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
     }
 
     private void KillEnemy() {
-        MakePlayerPressRight();
-        ConsumeActionEvent(ActionStateEvents.KILL_ENEMY, ReduceEnemiesHP);
-
-        var activeMonsters = _monsters.Select(monster => monster.activeSelf).ToList();
-        if (activeMonsters.Count > 0) {
-            var monsterToKillIndex = UnityEngine.Random.Range(0, activeMonsters.Count);
-            _monsters[monsterToKillIndex].SetActive(false);
+        void DeativateRandomEnemy() {
+            var activeMonsters = _monsters.Where(monster => monster.activeSelf).ToList();
+            if (activeMonsters.Count > 0) {
+                var monsterToKillIndex = UnityEngine.Random.Range(0, activeMonsters.Count);
+                activeMonsters[monsterToKillIndex].SetActive(false);
+            }
         }
+
+        MakePlayerPressRight();
+        DeativateRandomEnemy();
+
+        ConsumeActionEvent(ActionStateEvents.KILL_ENEMY, ReduceEnemiesHP);
     }
 
     private void ConsumeActionEvent(ActionStateEvents actionEvent, Action doAfterConsume) {

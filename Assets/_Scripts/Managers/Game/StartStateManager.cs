@@ -13,6 +13,8 @@ public class StartStateManager : MonoBehaviour, IGameStateManager {
     public Slider _heroHealthBar;
     [SerializeField]
     public Slider _enemiesHealthBar;
+    [SerializeField]
+    private List<GameObject> _monsters;
 
     private void OnEnable() {
         Messenger<LevelConfiguration>.AddListener(GameEvents.InitStartStateEvent, SetUpStartState);
@@ -31,11 +33,27 @@ public class StartStateManager : MonoBehaviour, IGameStateManager {
     }
 
     public void SetUpStartState(LevelConfiguration levelConfiguration) {
-        void SetUpEnemiesHealthBar(LevelConfiguration levelConfiguration) {
+        void SetUpEnemiesConfiguration(LevelConfiguration levelConfiguration) {
+            // Enemies HealthBar
             var enemiesHP = levelConfiguration.ActionEvents.Count(actionEvent => actionEvent == ActionStateEvents.DO_DAMAGE_TO_ENEMIES);
             var enemiesCount = levelConfiguration.ActionEvents.Count(actionEvent => actionEvent == ActionStateEvents.KILL_ENEMY);
             _enemiesHealthBar.maxValue = enemiesHP + enemiesCount;
             _enemiesHealthBar.value = _enemiesHealthBar.maxValue;
+
+            // Active Enemies
+            foreach (var monster in _monsters) {
+                monster.SetActive(false);
+            }
+            
+            var activeEnemies = 0;
+            while (activeEnemies < enemiesCount) {
+                var inactiveMonsters = _monsters.Where(monster => !monster.activeSelf).ToList();
+                if (inactiveMonsters.Count > 0) {
+                    var monsterToActivateIndex = UnityEngine.Random.Range(0, inactiveMonsters.Count);
+                    inactiveMonsters[monsterToActivateIndex].SetActive(true);
+                    activeEnemies++;
+                }
+            }
         }
 
         void SetUpHeroHealthBar(LevelConfiguration levelConfiguration) {
@@ -44,8 +62,8 @@ public class StartStateManager : MonoBehaviour, IGameStateManager {
         }
 
         SetUpHeroHealthBar(levelConfiguration);
-        SetUpEnemiesHealthBar(levelConfiguration);
-        
+        SetUpEnemiesConfiguration(levelConfiguration);
+
         this.StartTaskAfter(_secondsToWaitForStateChange, FinishState);
     }
 }

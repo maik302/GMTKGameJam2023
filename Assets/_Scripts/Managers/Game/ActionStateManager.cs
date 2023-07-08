@@ -114,13 +114,6 @@ public class ActionStateManager : MonoBehaviour, IGameStateManager {
     private void KillEnemy() {
         ChangeHeroSprite(_innerGameSpritesHolder.HeroAttack);
         ChangeMonstersSprites(_innerGameSpritesHolder.MonsterDamage);
-
-        // TODO: This has to be done by the player in the UPDATE state
-        // var activeMonsters = _monsters.Select(monster => monster.activeSelf).ToList();
-        // if (activeMonsters.Count > 0) {
-        //     var monsterToKillIndex = Random.Range(0, activeMonsters.Count);
-        //     _monsters[monsterToKillIndex].SetActive(false);
-        // }
     }
 
     private void ReturnToIdle() {
