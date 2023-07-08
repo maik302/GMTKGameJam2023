@@ -8,7 +8,7 @@ public class MainMenuController : MonoBehaviour {
     }
 
     public void GoToMainGameScene() {
-        // TODO
+        SceneManager.LoadScene(ScenesNames.MainGameScene);
     }
 
     public void GoToHighScoresScene() {
