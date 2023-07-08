@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private TextMeshProUGUI _currentLevelText;
     [SerializeField]
-    private GameObject _finishOkUI;
+    private GameObject _finishGameUI;
 
     [Header("Game States configuration")]
     [SerializeField]
@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
-        _finishOkUI.SetActive(false);
+        _finishGameUI.SetActive(false);
         _currentGameState = GameStates.INIT;
         _currentLevelIndex = 0;
         this.StartTaskAfter(_secondsBetweenStates, StartNextGameState);
@@ -102,6 +102,11 @@ public class GameManager : MonoBehaviour {
     }
 
     private void FinishUpdateStateKoHandler(float elapsedTimeInSeconds) {
-        ChangeGameState(GameStates.FINISH_KO);
+        void ChangeToFinishKoGameState(float elapsedTimeInSeconds, int currentLevelIndex) {
+            _currentGameState = GameStates.FINISH_KO;
+            Messenger<float, int>.Broadcast(GameStateUtils.GetInitGameStateEvent(GameStates.FINISH_KO), elapsedTimeInSeconds, currentLevelIndex);
+        }
+
+        ChangeToFinishKoGameState(elapsedTimeInSeconds, _currentLevelIndex);
     }
 }

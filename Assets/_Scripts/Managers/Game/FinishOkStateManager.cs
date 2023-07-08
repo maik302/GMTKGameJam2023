@@ -7,7 +7,11 @@ using System;
 public class FinishOkStateManager : MonoBehaviour, IGameStateManager {
 
     [SerializeField]
-    private GameObject _finishOkUI;
+    private GameObject _finishGameUI;
+    [SerializeField]
+    private TextMeshProUGUI _finishOkTitleText;
+    [SerializeField]
+    private TextMeshProUGUI _finishOkDescriptionText;
     [SerializeField]
     private TextMeshProUGUI _elapsedTimeText;
 
@@ -33,8 +37,10 @@ public class FinishOkStateManager : MonoBehaviour, IGameStateManager {
     }
 
     public void StartState() {
+        _finishOkTitleText.text = GameTexts.FinishOkTitleText;
+        _finishOkDescriptionText.text = GameTexts.FinishOkDescriptionText;
         _elapsedTimeText.text = TimeSpan.FromSeconds(_elapsedTimeInSeconds).ToString(@"mm\:ss\:ff");
-        _finishOkUI.SetActive(true);
+        _finishGameUI.SetActive(true);
     }
 
     private void SetUpFinishOkState(float elapsedTimeInSeconds, int currentLevelIndex) {

@@ -708,7 +708,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbd501743f25e5348aa34aeae074320a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _finishOkUI: {fileID: 836898535}
+  _finishGameUI: {fileID: 836898535}
+  _finishOkTitleText: {fileID: 1623452462}
+  _finishOkDescriptionText: {fileID: 183934231}
   _elapsedTimeText: {fileID: 153666732}
 --- !u!1 &295088716
 GameObject:
@@ -1124,7 +1126,7 @@ GameObject:
   - component: {fileID: 836898536}
   - component: {fileID: 836898537}
   m_Layer: 5
-  m_Name: FinishOkScreen
+  m_Name: FinishScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1705,6 +1707,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9cc3898f97df7e45a497f3f8b358e64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _finishGameUI: {fileID: 836898535}
+  _finishKoTitleText: {fileID: 1623452462}
+  _finishKoDescriptionText: {fileID: 183934231}
+  _elapsedTimeText: {fileID: 153666732}
 --- !u!1 &1333734846
 GameObject:
   m_ObjectHideFlags: 0
@@ -1750,7 +1756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentLevelText: {fileID: 589547899}
-  _finishOkUI: {fileID: 836898535}
+  _finishGameUI: {fileID: 836898535}
   _secondsBetweenStates: 1
   _levels:
   - PlayerLives: 3
