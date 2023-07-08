@@ -17,12 +17,12 @@ public class StartStateManager : MonoBehaviour, IGameStateManager {
         Messenger<LevelConfiguration>.RemoveListener(GameEvents.InitStartStateEvent, SetUpStartState);
     }
 
-    public void FinishState(GameStates nextGameState) {
-        Messenger<GameStates>.Broadcast(GameEvents.FinishGameStateEvent, nextGameState);
+    public void FinishState() {
+        Messenger.Broadcast(GameEvents.FinishGameStateEvent);
     }
 
     public void StartState() {
-        
+
     }
 
     public void SetUpStartState(LevelConfiguration levelConfiguration) {
@@ -33,6 +33,6 @@ public class StartStateManager : MonoBehaviour, IGameStateManager {
         Debug.Log($"There are: {enemiesCount} enemies with {enemiesHP} HP");
         // TODO Set up sprites with this data
 
-        this.StartTaskAfter<GameStates>(_secondsToWaitForStateChange, FinishState, GameStates.ACTION);
+        this.StartTaskAfter(_secondsToWaitForStateChange, FinishState);
     }
 }

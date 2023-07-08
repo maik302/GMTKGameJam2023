@@ -16,21 +16,35 @@ public class GameManager : MonoBehaviour {
     private GameStates _currentGameState;
 
     private void OnEnable() {
-        Messenger<GameStates>.AddListener(GameEvents.FinishGameStateEvent, StartNextGameState);
+        Messenger.AddListener(GameEvents.FinishGameStateEvent, StartNextGameState);
     }
 
     private void OnDisable() {
-        Messenger<GameStates>.RemoveListener(GameEvents.FinishGameStateEvent, StartNextGameState);
+        Messenger.RemoveListener(GameEvents.FinishGameStateEvent, StartNextGameState);
     }
 
     private void Start() {
-        this.StartTaskAfter(_secondsBetweenStates, StartNextGameState, GameStates.START);
+        _currentGameState = GameStates.INIT;
+        this.StartTaskAfter(_secondsBetweenStates, StartNextGameState);
     }
 
-    private void StartNextGameState(GameStates nextGameState) {
+    private void StartNextGameState() {
+        GameStates GetNextGameState() {
+            // TODO Add new logic for when the game needs to end (when the player loses all of their lives, or all levels are completed)
+
+            return _currentGameState switch {
+                GameStates.INIT => GameStates.START,
+                GameStates.START => GameStates.ACTION,
+                GameStates.ACTION => GameStates.UPDATE,
+                _ => GameStates.START
+            };
+        }
+
+        var nextGameState = GetNextGameState();
         switch (nextGameState) {
             case GameStates.START:
-            case GameStates.ACTION: {
+            case GameStates.ACTION:
+            case GameStates.UPDATE: {
                 ChangeGameState(nextGameState, _levels[0]);
                 break;
             }

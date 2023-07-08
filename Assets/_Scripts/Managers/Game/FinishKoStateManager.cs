@@ -11,7 +11,7 @@ public class FinishKoStateManager : MonoBehaviour, IGameStateManager {
         Messenger.RemoveListener(GameEvents.InitFinishKoStateEvent, StartState);
     }
 
-    public void FinishState(GameStates nextGameState) {
+    public void FinishState() {
         //TODO
         Debug.Log($"The FINISH_KO state has finished!");
     }

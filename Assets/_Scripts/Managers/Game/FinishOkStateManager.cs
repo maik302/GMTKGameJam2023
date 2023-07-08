@@ -11,7 +11,7 @@ public class FinishOkStateManager : MonoBehaviour, IGameStateManager {
         Messenger.RemoveListener(GameEvents.InitFinishOkStateEvent, StartState);
     }
 
-    public void FinishState(GameStates nextGameState) {
+    public void FinishState() {
         //TODO
         Debug.Log($"The FINISH_OK state has finished!");
     }

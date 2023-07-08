@@ -22,8 +22,8 @@ public class ActionStateManager : MonoBehaviour, IGameStateManager {
         _actionEvents = new List<ActionStateEvents>();
     }
     
-    public void FinishState(GameStates nextGameState) {
-        Messenger<GameStates>.Broadcast(GameEvents.FinishGameStateEvent, nextGameState);
+    public void FinishState() {
+        Messenger.Broadcast(GameEvents.FinishGameStateEvent);
     }
 
     public void StartState() {
@@ -46,6 +46,6 @@ public class ActionStateManager : MonoBehaviour, IGameStateManager {
             MakeAction(actionEvent);
         }
 
-        FinishState(nextGameState: GameStates.UPDATE);
+        FinishState();
     }
 }
