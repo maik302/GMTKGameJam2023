@@ -14,22 +14,31 @@ public class GameManager : MonoBehaviour {
     private List<LevelConfiguration> _levels;
 
     private GameStates _currentGameState;
-    private bool _playerHasLivesLeft;
 
-    private void OnAwake() {
-        _playerHasLivesLeft = true;
+    private void OnEnable() {
+        Messenger<GameStates>.AddListener(GameEvents.FinishGameStateEvent, HandleFinishedState);
+    }
+
+    private void OnDisable() {
+        Messenger<GameStates>.RemoveListener(GameEvents.FinishGameStateEvent, HandleFinishedState);
     }
 
     private void Start() {
         this.StartTaskAfter(_secondsBetweenStates, StartLevel, _levels[0]);
     }
 
-    private void ChangeGameState(GameStates gameState) {
-        _currentGameState = gameState;
-        Messenger.Broadcast(GameStateUtils.GetGameStateEvent(gameState));
-    }
-
     private void StartLevel(LevelConfiguration levelConfiguration) {
         Messenger<LevelConfiguration>.Broadcast(GameEvents.InitStartStateEvent, levelConfiguration);
+    }
+
+    private void HandleFinishedState(GameStates nextGameState) {
+        void ChangeGameState(GameStates gameState) {
+            _currentGameState = gameState;
+            Messenger.Broadcast(GameStateUtils.GetInitGameStateEvent(gameState));
+        }
+
+        if (nextGameState != GameStates.START) {
+            ChangeGameState(nextGameState);
+        }
     }
 }

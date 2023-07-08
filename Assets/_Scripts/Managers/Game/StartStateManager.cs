@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StartStateManager : MonoBehaviour, IGameStateManager {
+    
+    [SerializeField]
+    [Range(0.5f, 10f)]
+    private float _secondsToWaitForStateChange = 1.0f;
+
     private void OnEnable() {
         Messenger<LevelConfiguration>.AddListener(GameEvents.InitStartStateEvent, SetUpStartState);
     }
@@ -13,8 +18,7 @@ public class StartStateManager : MonoBehaviour, IGameStateManager {
     }
 
     public void FinishState(GameStates nextGameState) {
-        //TODO
-        Debug.Log($"The START state has finished!");
+        Messenger<GameStates>.Broadcast(GameEvents.FinishGameStateEvent, nextGameState);
     }
 
     public void StartState() {
@@ -29,5 +33,7 @@ public class StartStateManager : MonoBehaviour, IGameStateManager {
         Debug.Log($"The START state has started!");
         Debug.Log($"There are: {enemiesCount} enemies with {enemiesHP} HP");
         // TODO Set up sprites with this data
+
+        this.StartTaskAfter<GameStates>(_secondsToWaitForStateChange, FinishState, GameStates.ACTION);
     }
 }
