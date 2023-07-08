@@ -18,6 +18,6 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
 
     public void StartState() {
         //TODO
-        Debug.Log($"The UPDATE state has finished!");
+        Debug.Log($"The UPDATE state has started!");
     }
 }
