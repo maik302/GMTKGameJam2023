@@ -416,10 +416,13 @@ MonoBehaviour:
   _levels:
   - PlayerLives: 3
     ActionEvents: 00000000
+    TimeBetweenEachAction: 1
   - PlayerLives: 3
-    ActionEvents: 01000000
+    ActionEvents: 010000000100000001000000
+    TimeBetweenEachAction: 0.658
   - PlayerLives: 3
-    ActionEvents: 02000000
+    ActionEvents: 0200000002000000
+    TimeBetweenEachAction: 0.396
 --- !u!1 &1770584236
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,7 +626,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db91aea30cf832f4ba60084a48b8b1ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeBetweenEachAction: 1
 --- !u!1 &2038194636
 GameObject:
   m_ObjectHideFlags: 0

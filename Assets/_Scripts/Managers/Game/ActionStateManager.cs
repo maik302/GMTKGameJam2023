@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class ActionStateManager : MonoBehaviour, IGameStateManager {
 
-    [SerializeField]
-    [Range(0.5f, 3f)]
-    private float _timeBetweenEachAction = 1.0f;
-
     private List<ActionStateEvents> _actionEvents;
+    private float _timeBetweenEachAction;
 
     private void OnEnable() {
         Messenger<LevelConfiguration>.AddListener(GameEvents.InitActionStateEvent, SetUpActionState);
@@ -32,6 +29,7 @@ public class ActionStateManager : MonoBehaviour, IGameStateManager {
 
     private void SetUpActionState(LevelConfiguration levelConfiguration) {
         _actionEvents = levelConfiguration.ActionEvents;
+        _timeBetweenEachAction = levelConfiguration.TimeBetweenEachAction;
         StartState();
     }
 
