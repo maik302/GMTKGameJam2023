@@ -1,5 +1,6 @@
 
 public enum GameStates {
+    INIT,
     START,
     ACTION,
     UPDATE,
