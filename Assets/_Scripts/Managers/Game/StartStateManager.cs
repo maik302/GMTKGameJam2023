@@ -11,13 +11,13 @@ public class StartStateManager : MonoBehaviour, IGameStateManager {
         Messenger.RemoveListener(GameEvents.InitStartStateEvent, StartState);
     }
 
-    public void StartState() {
-        //TODO
-        Debug.Log($"The START state has started!");
-    }
-
     public void FinishState(GameStates nextGameState) {
         //TODO
         Debug.Log($"The START state has finished!");
+    }
+
+    public void StartState() {
+        //TODO
+        Debug.Log($"The START state has started!");
     }
 }
