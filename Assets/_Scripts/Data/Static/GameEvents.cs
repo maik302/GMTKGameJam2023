@@ -8,4 +8,6 @@ public static class GameEvents {
 
     // Finish state events
     public const string FinishGameStateEvent = "FinishGameStateEvent";
+    public const string FinishUpdateStateOkEvent = "FinishUpdateStateOkEvent";
+    public const string FinishUpdateStateKoEvent = "FinishUpdateStateKoEvent";
 }
