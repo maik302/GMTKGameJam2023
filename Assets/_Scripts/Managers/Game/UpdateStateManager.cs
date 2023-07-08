@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.UI;
+using System.Linq;
 
 public class UpdateStateManager : MonoBehaviour, IGameStateManager {
 
@@ -16,6 +18,12 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
     private OuterGameSpritesHolder _outerGameSpritesHolder;
     [SerializeField]
     private GameObject _player;
+    [SerializeField]
+    private Slider _heroHealthBar;
+    [SerializeField]
+    private Slider _enemiesHealthBar;
+    [SerializeField]
+    private List<GameObject> _monsters;
 
     private List<ActionStateEvents> _actionEvents;
     private int _playerLives;
@@ -66,17 +74,13 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
     private void OnButtonPress() {
         if (_isStateActive) {
             if (Keyboard.current.zKey.wasPressedThisFrame) {
-                ConsumeActionEvent(ActionStateEvents.HEAL);
-                MakePlayerPressLeft();
+                Heal();
             } else if (Keyboard.current.xKey.wasPressedThisFrame) {
-                ConsumeActionEvent(ActionStateEvents.TAKE_DAMAGE);
-                MakePlayerPressLeft();
+                TakeDamage();
             } else if (Keyboard.current.nKey.wasPressedThisFrame) {
-                ConsumeActionEvent(ActionStateEvents.DO_DAMAGE_TO_ENEMIES);
-                MakePlayerPressRight();
+                DoDamageToEnemies();
             } else if (Keyboard.current.mKey.wasPressedThisFrame) {
-                ConsumeActionEvent(ActionStateEvents.KILL_ENEMY);
-                MakePlayerPressRight();
+                KillEnemy();
             } else if (
                 Keyboard.current.zKey.wasReleasedThisFrame ||
                 Keyboard.current.xKey.wasReleasedThisFrame ||
@@ -88,10 +92,37 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
         }
     }
 
-    private void ConsumeActionEvent(ActionStateEvents actionEvent) {
+    private void DoDamageToEnemies() {
+        MakePlayerPressRight();
+        ConsumeActionEvent(ActionStateEvents.DO_DAMAGE_TO_ENEMIES, ReduceEnemiesHP);
+    }
+
+    private void TakeDamage() {
+        MakePlayerPressLeft();
+        ConsumeActionEvent(ActionStateEvents.TAKE_DAMAGE, ReduceHeroHP);
+    }
+
+    private void Heal() {
+        MakePlayerPressLeft();
+        ConsumeActionEvent(ActionStateEvents.HEAL, RestoreHeroHP);
+    }
+
+    private void KillEnemy() {
+        MakePlayerPressRight();
+        ConsumeActionEvent(ActionStateEvents.KILL_ENEMY, ReduceEnemiesHP);
+
+        var activeMonsters = _monsters.Select(monster => monster.activeSelf).ToList();
+        if (activeMonsters.Count > 0) {
+            var monsterToKillIndex = UnityEngine.Random.Range(0, activeMonsters.Count);
+            _monsters[monsterToKillIndex].SetActive(false);
+        }
+    }
+
+    private void ConsumeActionEvent(ActionStateEvents actionEvent, Action doAfterConsume) {
         if (actionEvent == _actionEvents[_currentActionIndex]) {
             Debug.Log("CORRECT ACTION!");
             _currentActionIndex++;
+            doAfterConsume();
         } else {
             Debug.Log("INCORRECT ACTION!");
             _playerLives--;
@@ -131,5 +162,17 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
 
     private void ReturnToIdle() {
         ChangePlayerSprite(_outerGameSpritesHolder.PlayerIdle);
+    }
+
+    private void ReduceHeroHP() {
+        _heroHealthBar.value--;
+    }
+
+    private void RestoreHeroHP() {
+        _heroHealthBar.value = _heroHealthBar.maxValue;
+    }
+
+    private void ReduceEnemiesHP() {
+        _enemiesHealthBar.value--;
     }
 }

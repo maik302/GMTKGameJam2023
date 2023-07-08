@@ -2,12 +2,17 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StartStateManager : MonoBehaviour, IGameStateManager {
     
     [SerializeField]
     [Range(0.5f, 10f)]
     private float _secondsToWaitForStateChange = 1.0f;
+    [SerializeField]
+    public Slider _heroHealthBar;
+    [SerializeField]
+    public Slider _enemiesHealthBar;
 
     private void OnEnable() {
         Messenger<LevelConfiguration>.AddListener(GameEvents.InitStartStateEvent, SetUpStartState);
@@ -26,13 +31,21 @@ public class StartStateManager : MonoBehaviour, IGameStateManager {
     }
 
     public void SetUpStartState(LevelConfiguration levelConfiguration) {
-        var enemiesHP = levelConfiguration.ActionEvents.Count(actionEvent => actionEvent == ActionStateEvents.DO_DAMAGE_TO_ENEMIES);
-        var enemiesCount = levelConfiguration.ActionEvents.Count(actionEvent => actionEvent == ActionStateEvents.KILL_ENEMY);
+        void SetUpEnemiesHealthBar(LevelConfiguration levelConfiguration) {
+            var enemiesHP = levelConfiguration.ActionEvents.Count(actionEvent => actionEvent == ActionStateEvents.DO_DAMAGE_TO_ENEMIES);
+            var enemiesCount = levelConfiguration.ActionEvents.Count(actionEvent => actionEvent == ActionStateEvents.KILL_ENEMY);
+            _enemiesHealthBar.maxValue = enemiesHP + enemiesCount;
+            _enemiesHealthBar.value = _enemiesHealthBar.maxValue;
+        }
 
-        Debug.Log($"The START state has started!");
-        Debug.Log($"There are: {enemiesCount} enemies with {enemiesHP} HP");
-        // TODO Set up sprites with this data
+        void SetUpHeroHealthBar(LevelConfiguration levelConfiguration) {
+            _heroHealthBar.maxValue = levelConfiguration.HeroMaxHP;
+            _heroHealthBar.value = _heroHealthBar.maxValue;
+        }
 
+        SetUpHeroHealthBar(levelConfiguration);
+        SetUpEnemiesHealthBar(levelConfiguration);
+        
         this.StartTaskAfter(_secondsToWaitForStateChange, FinishState);
     }
 }

@@ -9,6 +9,7 @@ public class LevelConfiguration {
     public List<ActionStateEvents> ActionEvents;
     [Range(0.1f, 1.0f)]
     public float TimeBetweenEachAction = 1.0f;
+    public int HeroMaxHP;
 
     public LevelConfiguration(List<ActionStateEvents> actionEvents, int playerLives, float timeBetweenEachAction) {
         this.ActionEvents = actionEvents;
