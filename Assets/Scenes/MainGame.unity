@@ -333,6 +333,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1324750342}
+  - component: {fileID: 1324750343}
   m_Layer: 0
   m_Name: FinishKoStateManager
   m_TagString: Untagged
@@ -355,6 +356,18 @@ Transform:
   m_Father: {fileID: 710542375}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1324750343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324750341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9cc3898f97df7e45a497f3f8b358e64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1333734846
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,7 +414,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _secondsBetweenStates: 5
   _levels:
-  - ActionEvents: 000000000000000000000000030000000300000002000000010000000000000003000000
+  - PlayerLives: 3
+    ActionEvents: 00000000
+  - PlayerLives: 3
+    ActionEvents: 01000000
+  - PlayerLives: 3
+    ActionEvents: 02000000
 --- !u!1 &1770584236
 GameObject:
   m_ObjectHideFlags: 0

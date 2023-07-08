@@ -5,10 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public class LevelConfiguration {
 
+    public int PlayerLives;
     public List<ActionStateEvents> ActionEvents;
 
-    public LevelConfiguration(List<ActionStateEvents> actionEvents) {
+    public LevelConfiguration(List<ActionStateEvents> actionEvents, int playerLives) {
         this.ActionEvents = actionEvents;
+        this.PlayerLives = playerLives;
     }
 
     public LevelConfiguration GetCopy() {
@@ -17,6 +19,6 @@ public class LevelConfiguration {
             actionEventsCopy.Add(actionEvent);
         });
 
-        return new LevelConfiguration(actionEventsCopy);
+        return new LevelConfiguration(actionEventsCopy, PlayerLives);
     }
 }

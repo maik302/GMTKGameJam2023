@@ -14,28 +14,36 @@ public class GameManager : MonoBehaviour {
     private List<LevelConfiguration> _levels;
 
     private GameStates _currentGameState;
+    private int _currentLevelIndex;
 
     private void OnEnable() {
         Messenger.AddListener(GameEvents.FinishGameStateEvent, StartNextGameState);
+        Messenger.AddListener(GameEvents.FinishUpdateStateOkEvent, FinishUpdateStateOkHandler);
+        Messenger.AddListener(GameEvents.FinishUpdateStateKoEvent, FinishUpdateStateKoHandler);
     }
 
     private void OnDisable() {
         Messenger.RemoveListener(GameEvents.FinishGameStateEvent, StartNextGameState);
+        Messenger.RemoveListener(GameEvents.FinishUpdateStateOkEvent, FinishUpdateStateOkHandler);
+        Messenger.RemoveListener(GameEvents.FinishUpdateStateKoEvent, FinishUpdateStateKoHandler);
     }
 
     private void Start() {
         _currentGameState = GameStates.INIT;
+        _currentLevelIndex = 0;
         this.StartTaskAfter(_secondsBetweenStates, StartNextGameState);
     }
 
     private void StartNextGameState() {
         GameStates GetNextGameState() {
-            // TODO Add new logic for when the game needs to end (when the player loses all of their lives, or all levels are completed)
-
             return _currentGameState switch {
                 GameStates.INIT => GameStates.START,
+                
+                // Main loop
                 GameStates.START => GameStates.ACTION,
                 GameStates.ACTION => GameStates.UPDATE,
+                GameStates.UPDATE => GameStates.START,
+                
                 _ => GameStates.START
             };
         }
@@ -45,7 +53,7 @@ public class GameManager : MonoBehaviour {
             case GameStates.START:
             case GameStates.ACTION:
             case GameStates.UPDATE: {
-                ChangeGameState(nextGameState, _levels[0]);
+                ChangeGameState(nextGameState, _levels[_currentLevelIndex]);
                 break;
             }
 
@@ -64,5 +72,18 @@ public class GameManager : MonoBehaviour {
     private void ChangeGameState(GameStates gameState, LevelConfiguration levelConfiguration) {
         _currentGameState = gameState;
         Messenger<LevelConfiguration>.Broadcast(GameStateUtils.GetInitGameStateEvent(gameState), levelConfiguration);
+    }
+
+    private void FinishUpdateStateOkHandler() {
+        _currentLevelIndex++;
+        if (_currentLevelIndex >= _levels.Count) {
+            ChangeGameState(GameStates.FINISH_OK);
+        } else {
+            StartNextGameState();
+        }
+    }
+
+    private void FinishUpdateStateKoHandler() {
+        ChangeGameState(GameStates.FINISH_KO);
     }
 }

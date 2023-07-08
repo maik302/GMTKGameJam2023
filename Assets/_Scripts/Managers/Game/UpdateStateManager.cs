@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class UpdateStateManager : MonoBehaviour, IGameStateManager {
 
     private List<ActionStateEvents> _actionEvents;
+    private int _playerLives;
     private bool _isStateActive = false;
     private int _currentActionIndex = 0;
 
@@ -19,8 +20,6 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
 
     public void FinishState() {
         _isStateActive = false;
-        //TODO
-        Debug.Log($"The UPDATE state has finished!");
     }
 
     public void StartState() {
@@ -30,6 +29,7 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
 
     private void SetUpUpdateState(LevelConfiguration levelConfiguration) {
         _actionEvents = levelConfiguration.ActionEvents;
+        _playerLives = levelConfiguration.PlayerLives;
         StartState();
     }
 
@@ -53,11 +53,23 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
             _currentActionIndex++;
         } else {
             Debug.Log("INCORRECT ACTION!");
-            // TODO Reduce the player's life counter
+            _playerLives--;
         }
 
         if (_currentActionIndex >= _actionEvents.Count) {
-            FinishState();
+            FinishUpdateStateOk();
+        } else if (_playerLives <= 0) {
+            FinishUpdateStateKo();
         }
+    }
+
+    private void FinishUpdateStateOk() {
+        _isStateActive = false;
+        Messenger.Broadcast(GameEvents.FinishUpdateStateOkEvent);
+    }
+
+    private void FinishUpdateStateKo() {
+        _isStateActive = false;
+        Messenger.Broadcast(GameEvents.FinishUpdateStateKoEvent);
     }
 }
