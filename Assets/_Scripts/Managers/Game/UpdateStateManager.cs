@@ -11,7 +11,7 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
         Messenger.RemoveListener(GameEvents.InitUpdateStateEvent, StartState);
     }
 
-    public void FinishState(GameStates nextGameState) {
+    public void FinishState() {
         //TODO
         Debug.Log($"The UPDATE state has finished!");
     }
