@@ -12,7 +12,7 @@ public class ActionStateManager : MonoBehaviour, IGameStateManager {
 
     [Header("Inner game elements")]
     [SerializeField]
-    private SpritesHolder _spritesHolder;
+    private InnerGameSpritesHolder _innerGameSpritesHolder;
     [SerializeField]
     private GameObject _hero;
     [SerializeField]
@@ -78,14 +78,14 @@ public class ActionStateManager : MonoBehaviour, IGameStateManager {
         FinishState();
     }
 
-    void ChangeHeroSprite(Sprite sprite) {
+    private void ChangeHeroSprite(Sprite sprite) {
         var heroSpriteRenderer = _hero.GetComponent<SpriteRenderer>();
         if (heroSpriteRenderer != null) {
             heroSpriteRenderer.sprite = sprite;
         }
     }
 
-    void ChangeMonstersSprites(Sprite sprite) {
+    private void ChangeMonstersSprites(Sprite sprite) {
         foreach (var monster in _monsters) {
             if (monster.activeSelf) {
                 var monsterSpriteRenderer = monster.GetComponent<SpriteRenderer>();
@@ -97,23 +97,23 @@ public class ActionStateManager : MonoBehaviour, IGameStateManager {
     }
 
     private void DoDamageToEnemies() {
-        ChangeHeroSprite(_spritesHolder.HeroAttack);
-        ChangeMonstersSprites(_spritesHolder.MonsterDamage);
+        ChangeHeroSprite(_innerGameSpritesHolder.HeroAttack);
+        ChangeMonstersSprites(_innerGameSpritesHolder.MonsterDamage);
     }
 
     private void TakeDamage() {
-        ChangeHeroSprite(_spritesHolder.HeroDamage);
-        ChangeMonstersSprites(_spritesHolder.MonsterAttack);
+        ChangeHeroSprite(_innerGameSpritesHolder.HeroDamage);
+        ChangeMonstersSprites(_innerGameSpritesHolder.MonsterAttack);
     }
 
     private void Heal() {
-        ChangeHeroSprite(_spritesHolder.HeroHeal);
-        ChangeMonstersSprites(_spritesHolder.MonsterIdle);
+        ChangeHeroSprite(_innerGameSpritesHolder.HeroHeal);
+        ChangeMonstersSprites(_innerGameSpritesHolder.MonsterIdle);
     }
 
     private void KillEnemy() {
-        ChangeHeroSprite(_spritesHolder.HeroAttack);
-        ChangeMonstersSprites(_spritesHolder.MonsterDamage);
+        ChangeHeroSprite(_innerGameSpritesHolder.HeroAttack);
+        ChangeMonstersSprites(_innerGameSpritesHolder.MonsterDamage);
 
         // TODO: This has to be done by the player in the UPDATE state
         // var activeMonsters = _monsters.Select(monster => monster.activeSelf).ToList();
@@ -124,7 +124,7 @@ public class ActionStateManager : MonoBehaviour, IGameStateManager {
     }
 
     private void ReturnToIdle() {
-        ChangeHeroSprite(_spritesHolder.HeroIdle);
-        ChangeMonstersSprites(_spritesHolder.MonsterIdle);
+        ChangeHeroSprite(_innerGameSpritesHolder.HeroIdle);
+        ChangeMonstersSprites(_innerGameSpritesHolder.MonsterIdle);
     }
 }

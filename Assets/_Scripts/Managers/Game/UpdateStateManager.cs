@@ -7,8 +7,15 @@ using TMPro;
 
 public class UpdateStateManager : MonoBehaviour, IGameStateManager {
 
+    [Header("Outer game elements")]
+    [SerializeField]
+    private GameObject _outerGameElementsContainer;
     [SerializeField]
     private TextMeshProUGUI _elapsedTimeCounter;
+    [SerializeField]
+    private OuterGameSpritesHolder _outerGameSpritesHolder;
+    [SerializeField]
+    private GameObject _player;
 
     private List<ActionStateEvents> _actionEvents;
     private int _playerLives;
@@ -36,12 +43,18 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
     }
 
     public void FinishState() {
+        ReturnToIdle();
         _isStateActive = false;
     }
 
     public void StartState() {
         _isStateActive = true;
         _currentActionIndex = 0;
+        BringOverlayLayerUpfront();
+    }
+
+    private void BringOverlayLayerUpfront() {
+        _outerGameElementsContainer.SetActive(true);
     }
 
     private void SetUpUpdateState(LevelConfiguration levelConfiguration) {
@@ -54,12 +67,23 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
         if (_isStateActive) {
             if (Keyboard.current.zKey.wasPressedThisFrame) {
                 ConsumeActionEvent(ActionStateEvents.HEAL);
+                MakePlayerPressLeft();
             } else if (Keyboard.current.xKey.wasPressedThisFrame) {
                 ConsumeActionEvent(ActionStateEvents.TAKE_DAMAGE);
+                MakePlayerPressLeft();
             } else if (Keyboard.current.nKey.wasPressedThisFrame) {
                 ConsumeActionEvent(ActionStateEvents.DO_DAMAGE_TO_ENEMIES);
+                MakePlayerPressRight();
             } else if (Keyboard.current.mKey.wasPressedThisFrame) {
                 ConsumeActionEvent(ActionStateEvents.KILL_ENEMY);
+                MakePlayerPressRight();
+            } else if (
+                Keyboard.current.zKey.wasReleasedThisFrame ||
+                Keyboard.current.xKey.wasReleasedThisFrame ||
+                Keyboard.current.nKey.wasReleasedThisFrame ||
+                Keyboard.current.mKey.wasReleasedThisFrame
+            ) {
+                ReturnToIdle();
             }
         }
     }
@@ -81,12 +105,31 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
     }
 
     private void FinishUpdateStateOk() {
-        _isStateActive = false;
+        FinishState();
         Messenger.Broadcast(GameEvents.FinishUpdateStateOkEvent);
     }
 
     private void FinishUpdateStateKo() {
-        _isStateActive = false;
+        FinishState();
         Messenger.Broadcast(GameEvents.FinishUpdateStateKoEvent);
+    }
+
+    private void ChangePlayerSprite(Sprite sprite) {
+        var playerSpriteRenderer = _player.GetComponent<SpriteRenderer>();
+        if (playerSpriteRenderer != null) {
+            playerSpriteRenderer.sprite = sprite;
+        }
+    }
+
+    private void MakePlayerPressRight() {
+        ChangePlayerSprite(_outerGameSpritesHolder.PlayerPressingRight);
+    }
+
+    private void MakePlayerPressLeft() {
+        ChangePlayerSprite(_outerGameSpritesHolder.PlayerPressingLeft);
+    }
+
+    private void ReturnToIdle() {
+        ChangePlayerSprite(_outerGameSpritesHolder.PlayerIdle);
     }
 }
