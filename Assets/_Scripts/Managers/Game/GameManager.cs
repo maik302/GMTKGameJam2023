@@ -1,8 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour {
+
+    [Header("General Game Settings")]
+    [SerializeField]
+    private TextMeshProUGUI _currentLevelText;
 
     [Header("Game States configuration")]
     [SerializeField]
@@ -35,6 +40,10 @@ public class GameManager : MonoBehaviour {
     }
 
     private void StartNextGameState() {
+        void UpdateCurrentLevelText() {
+            _currentLevelText.text = GameTexts.LevelText + (_currentLevelIndex + 1);
+        }
+
         GameStates GetNextGameState() {
             return _currentGameState switch {
                 GameStates.INIT => GameStates.START,
@@ -48,6 +57,7 @@ public class GameManager : MonoBehaviour {
             };
         }
 
+        UpdateCurrentLevelText();
         var nextGameState = GetNextGameState();
         switch (nextGameState) {
             case GameStates.START:
