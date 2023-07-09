@@ -59,7 +59,7 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
     }
 
     private void Update() {
-        if (_isStateActive) {
+        if (_isStateActive && !_stateIsFinishing) {
             _elapsedTimeInSeconds += Time.deltaTime;
             _elapsedTimeCounter.text = TimeSpan.FromSeconds(_elapsedTimeInSeconds).ToString(@"mm\:ss\:ff");
         }
