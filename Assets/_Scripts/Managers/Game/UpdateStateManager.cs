@@ -20,6 +20,8 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
     private List<GameObject> _playerLives;
     [SerializeField]
     private SpriteRenderer _actionSpriteIndicator;
+    [SerializeField]
+    private GameObject _actionsHelpUI;
 
     [Header("General state configurations")]
     [SerializeField]
@@ -74,6 +76,7 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
         _playerLivesContainer.SetActive(false);
         _elapsedTimeCounter.gameObject.SetActive(false);
         _actionSpriteIndicator.gameObject.SetActive(false);
+        _actionsHelpUI.SetActive(false);
     }
 
     public void StartState() {
@@ -89,6 +92,7 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
         _player.SetActive(true);
         _playerLivesContainer.SetActive(true);
         _elapsedTimeCounter.gameObject.SetActive(true);
+        _actionsHelpUI.SetActive(true);
     }
 
     private void SetUpUpdateState(LevelConfiguration levelConfiguration) {
