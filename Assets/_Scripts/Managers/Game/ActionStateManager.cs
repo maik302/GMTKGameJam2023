@@ -14,6 +14,8 @@ public class ActionStateManager : MonoBehaviour, IGameStateManager {
     [SerializeField]
     private InnerGameSpritesHolder _innerGameSpritesHolder;
     [SerializeField]
+    private SpriteRenderer _actionSpriteIndicator;
+    [SerializeField]
     private GameObject _hero;
     [SerializeField]
     private List<GameObject> _monsters;
@@ -96,28 +98,42 @@ public class ActionStateManager : MonoBehaviour, IGameStateManager {
         }
     }
 
+    private void ChangeActionIndicatorSprite(Sprite sprite) {
+        _actionSpriteIndicator.gameObject.SetActive(true);
+        _actionSpriteIndicator.sprite = sprite;
+    }
+
     private void DoDamageToEnemies() {
         ChangeHeroSprite(_innerGameSpritesHolder.HeroAttack);
         ChangeMonstersSprites(_innerGameSpritesHolder.MonsterDamage);
+        ChangeActionIndicatorSprite(_innerGameSpritesHolder.MonsterDamageAction);
+        AudioUtils.PlayMonsterDamageSFX();
     }
 
     private void TakeDamage() {
         ChangeHeroSprite(_innerGameSpritesHolder.HeroDamage);
         ChangeMonstersSprites(_innerGameSpritesHolder.MonsterAttack);
+        ChangeActionIndicatorSprite(_innerGameSpritesHolder.HeroDamageAction);
+        AudioUtils.PlayHeroDamageSFX();
     }
 
     private void Heal() {
         ChangeHeroSprite(_innerGameSpritesHolder.HeroHeal);
         ChangeMonstersSprites(_innerGameSpritesHolder.MonsterIdle);
+        ChangeActionIndicatorSprite(_innerGameSpritesHolder.HeroHealAction);
+        AudioUtils.PlayHeroHealSFX();
     }
 
     private void KillEnemy() {
         ChangeHeroSprite(_innerGameSpritesHolder.HeroAttack);
         ChangeMonstersSprites(_innerGameSpritesHolder.MonsterDamage);
+        ChangeActionIndicatorSprite(_innerGameSpritesHolder.MonsterDeathAction);
+        AudioUtils.PlayMonsterDeathSFX();
     }
 
     private void ReturnToIdle() {
         ChangeHeroSprite(_innerGameSpritesHolder.HeroIdle);
         ChangeMonstersSprites(_innerGameSpritesHolder.MonsterIdle);
+        _actionSpriteIndicator.gameObject.SetActive(false);
     }
 }

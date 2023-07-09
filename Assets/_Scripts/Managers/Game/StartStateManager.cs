@@ -48,7 +48,7 @@ public class StartStateManager : MonoBehaviour, IGameStateManager {
     }
 
     public void StartState() {
-
+        
     }
 
     public void SetUpStartState(LevelConfiguration levelConfiguration) {
@@ -97,7 +97,7 @@ public class StartStateManager : MonoBehaviour, IGameStateManager {
 
         for (int counter = countdownSeconds; counter > 0; counter--) {
             _countdownText.text = counter.ToString();
-
+            PlayCountdownVoicerOver(counter);
             yield return new WaitForSeconds(countdownSecondsBetweenChanges);
         }
 
@@ -108,5 +108,21 @@ public class StartStateManager : MonoBehaviour, IGameStateManager {
         _countdownText.gameObject.SetActive(false);
 
         doAfterFinish();
+    }
+
+    private void PlayCountdownVoicerOver(int counter) {
+        switch (counter) {
+            case 3:
+                AudioUtils.PlayThreeAnnouncement();
+                break;
+            case 2:
+                AudioUtils.PlayTwoAnnouncement();
+                break;
+            case 1:
+                AudioUtils.PlayOneAnnouncement();
+                break;
+            default:
+                break;
+        }
     }
 }

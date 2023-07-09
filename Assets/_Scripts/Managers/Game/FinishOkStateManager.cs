@@ -41,6 +41,7 @@ public class FinishOkStateManager : MonoBehaviour, IGameStateManager {
         _finishOkDescriptionText.text = GameTexts.FinishOkDescriptionText;
         _elapsedTimeText.text = TimeSpan.FromSeconds(_elapsedTimeInSeconds).ToString(@"mm\:ss\:ff");
         _finishGameUI.SetActive(true);
+        AudioUtils.PlayYouWinAnnouncement();
         SaveScore();
     }
 

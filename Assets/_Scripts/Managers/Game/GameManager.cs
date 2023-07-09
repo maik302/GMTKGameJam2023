@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour {
         _currentGameState = GameStates.INIT;
         _currentLevelIndex = 0;
         this.StartTaskAfter(_secondsBetweenStates, StartNextGameState);
+
+        AudioUtils.PlayBackgroundMusic();
     }
 
     private void StartNextGameState() {
