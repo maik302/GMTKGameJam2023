@@ -9,7 +9,13 @@ public static class PlayerPrefsUtils {
     public static void SaveHighScoreToPlayerPrefs(HighScoreHolder highScoreHolder) {
         var currentHighScore = GetHighScoreFromPlayerPrefs();
         if (currentHighScore != null ) {
-            if (currentHighScore.GetElapsedTimeInSeconds() >= highScoreHolder.GetElapsedTimeInSeconds()) {
+            var highestReachedLevel = currentHighScore.GetReachedLevel();
+            var givenReachedLevel = highScoreHolder.GetReachedLevel();
+            var elapsedTimeIsLowerThanSaved = currentHighScore.GetElapsedTimeInSeconds() >= highScoreHolder.GetElapsedTimeInSeconds();
+
+            if (givenReachedLevel > highestReachedLevel) {
+                PlayerPrefs.SetString(PlayerPrefsKeys.HighScoreKey, highScoreHolder.ToJson());
+            } else if (givenReachedLevel == highestReachedLevel && elapsedTimeIsLowerThanSaved) {
                 PlayerPrefs.SetString(PlayerPrefsKeys.HighScoreKey, highScoreHolder.ToJson());
             }
         } else {
