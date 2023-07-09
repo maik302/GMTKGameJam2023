@@ -85,6 +85,7 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
         _stateIsFinishing = false;
         ReturnToIdle();
         ShowOuterGameElements();
+        AudioUtils.PlayStartStateInitSFX();
     }
 
     private void ShowOuterGameElements() {
@@ -124,16 +125,19 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
 
     private void DoDamageToEnemies() {
         MakePlayerPressRight();
+        AudioUtils.PlayMonsterDamageSFX();
         ConsumeActionEvent(ActionStateEvents.DO_DAMAGE_TO_ENEMIES, ReduceEnemiesHP);
     }
 
     private void TakeDamage() {
         MakePlayerPressLeft();
+        AudioUtils.PlayHeroDamageSFX();
         ConsumeActionEvent(ActionStateEvents.TAKE_DAMAGE, ReduceHeroHP);
     }
 
     private void Heal() {
         MakePlayerPressLeft();
+        AudioUtils.PlayHeroHealSFX();
         ConsumeActionEvent(ActionStateEvents.HEAL, RestoreHeroHP);
     }
 
@@ -148,7 +152,7 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
 
         MakePlayerPressRight();
         DeativateRandomEnemy();
-
+        AudioUtils.PlayMonsterDeathSFX();
         ConsumeActionEvent(ActionStateEvents.KILL_ENEMY, ReduceEnemiesHP);
     }
 

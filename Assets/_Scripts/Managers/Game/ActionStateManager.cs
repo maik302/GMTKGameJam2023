@@ -107,24 +107,28 @@ public class ActionStateManager : MonoBehaviour, IGameStateManager {
         ChangeHeroSprite(_innerGameSpritesHolder.HeroAttack);
         ChangeMonstersSprites(_innerGameSpritesHolder.MonsterDamage);
         ChangeActionIndicatorSprite(_innerGameSpritesHolder.MonsterDamageAction);
+        AudioUtils.PlayMonsterDamageSFX();
     }
 
     private void TakeDamage() {
         ChangeHeroSprite(_innerGameSpritesHolder.HeroDamage);
         ChangeMonstersSprites(_innerGameSpritesHolder.MonsterAttack);
         ChangeActionIndicatorSprite(_innerGameSpritesHolder.HeroDamageAction);
+        AudioUtils.PlayHeroDamageSFX();
     }
 
     private void Heal() {
         ChangeHeroSprite(_innerGameSpritesHolder.HeroHeal);
         ChangeMonstersSprites(_innerGameSpritesHolder.MonsterIdle);
         ChangeActionIndicatorSprite(_innerGameSpritesHolder.HeroHealAction);
+        AudioUtils.PlayHeroHealSFX();
     }
 
     private void KillEnemy() {
         ChangeHeroSprite(_innerGameSpritesHolder.HeroAttack);
         ChangeMonstersSprites(_innerGameSpritesHolder.MonsterDamage);
         ChangeActionIndicatorSprite(_innerGameSpritesHolder.MonsterDeathAction);
+        AudioUtils.PlayMonsterDeathSFX();
     }
 
     private void ReturnToIdle() {

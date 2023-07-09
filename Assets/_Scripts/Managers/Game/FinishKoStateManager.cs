@@ -41,6 +41,7 @@ public class FinishKoStateManager : MonoBehaviour, IGameStateManager {
         _finishKoDescriptionText.text = String.Format(GameTexts.FinishKoDescriptionText, _reachedLevel);
         _elapsedTimeText.text = TimeSpan.FromSeconds(_elapsedTimeInSeconds).ToString(@"mm\:ss\:ff");
         _finishGameUI.SetActive(true);
+        AudioUtils.PlayYouLoseAnnouncement();
         SaveScore();
     }
 
