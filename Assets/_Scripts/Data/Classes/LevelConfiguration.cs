@@ -5,15 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public class LevelConfiguration {
 
-    public int PlayerLives;
     public List<ActionStateEvents> ActionEvents;
     [Range(0.1f, 1.0f)]
     public float TimeBetweenEachAction = 1.0f;
     public int HeroMaxHP;
 
-    public LevelConfiguration(List<ActionStateEvents> actionEvents, int playerLives, float timeBetweenEachAction) {
+    public LevelConfiguration(List<ActionStateEvents> actionEvents, float timeBetweenEachAction) {
         this.ActionEvents = actionEvents;
-        this.PlayerLives = playerLives;
         this.TimeBetweenEachAction = timeBetweenEachAction;
     }
 
@@ -23,6 +21,6 @@ public class LevelConfiguration {
             actionEventsCopy.Add(actionEvent);
         });
 
-        return new LevelConfiguration(actionEventsCopy, PlayerLives, TimeBetweenEachAction);
+        return new LevelConfiguration(actionEventsCopy, TimeBetweenEachAction);
     }
 }
