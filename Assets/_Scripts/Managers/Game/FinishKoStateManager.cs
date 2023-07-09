@@ -26,7 +26,7 @@ public class FinishKoStateManager : MonoBehaviour, IGameStateManager {
         Messenger<float, int>.RemoveListener(GameEvents.InitFinishKoStateEvent, SetUpFinishKoState);
     }
 
-    private void OnAwake() {
+    private void Awake() {
         _elapsedTimeInSeconds = 0f;
         _reachedLevel = 0;
     }
@@ -38,15 +38,22 @@ public class FinishKoStateManager : MonoBehaviour, IGameStateManager {
 
     public void StartState() {
         _finishKoTitleText.text = GameTexts.FinishKoTitleText;
-        _finishKoDescriptionText.text = String.Format(GameTexts.FinishKoDescriptionText, _reachedLevel + 1);
+        _finishKoDescriptionText.text = String.Format(GameTexts.FinishKoDescriptionText, _reachedLevel);
         _elapsedTimeText.text = TimeSpan.FromSeconds(_elapsedTimeInSeconds).ToString(@"mm\:ss\:ff");
         _finishGameUI.SetActive(true);
+        SaveScore();
     }
 
     private void SetUpFinishKoState(float elapsedTimeInSeconds, int currentLevelIndex) {
         this._elapsedTimeInSeconds = elapsedTimeInSeconds;
-        this._reachedLevel = currentLevelIndex;
+        this._reachedLevel = currentLevelIndex + 1;
 
         StartState();
+    }
+
+    private void SaveScore() {
+        PlayerPrefsUtils.SaveHighScoreToPlayerPrefs(
+            new HighScoreHolder(_elapsedTimeInSeconds, _reachedLevel)
+        );
     }
 }

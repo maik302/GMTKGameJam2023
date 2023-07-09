@@ -26,7 +26,7 @@ public class FinishOkStateManager : MonoBehaviour, IGameStateManager {
         Messenger<float, int>.RemoveListener(GameEvents.InitFinishOkStateEvent, SetUpFinishOkState);
     }
 
-    private void OnAwake() {
+    private void Awake() {
         _elapsedTimeInSeconds = 0f;
         _reachedLevel = 0;
     }
@@ -41,12 +41,19 @@ public class FinishOkStateManager : MonoBehaviour, IGameStateManager {
         _finishOkDescriptionText.text = GameTexts.FinishOkDescriptionText;
         _elapsedTimeText.text = TimeSpan.FromSeconds(_elapsedTimeInSeconds).ToString(@"mm\:ss\:ff");
         _finishGameUI.SetActive(true);
+        SaveScore();
     }
 
     private void SetUpFinishOkState(float elapsedTimeInSeconds, int currentLevelIndex) {
         this._elapsedTimeInSeconds = elapsedTimeInSeconds;
-        this._reachedLevel = currentLevelIndex;
+        this._reachedLevel = currentLevelIndex + 1;
 
         StartState();
+    }
+
+    private void SaveScore() {
+        PlayerPrefsUtils.SaveHighScoreToPlayerPrefs(
+            new HighScoreHolder(_elapsedTimeInSeconds, _reachedLevel)
+        );
     }
 }

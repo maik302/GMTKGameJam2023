@@ -39,7 +39,7 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
         Messenger<LevelConfiguration>.RemoveListener(GameEvents.InitUpdateStateEvent, SetUpUpdateState);
     }
 
-    private void OnAwake() {
+    private void Awake() {
         _elapsedTimeInSeconds = 0f;
     }
 

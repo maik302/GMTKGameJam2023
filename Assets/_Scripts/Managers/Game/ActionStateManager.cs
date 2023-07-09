@@ -30,7 +30,7 @@ public class ActionStateManager : MonoBehaviour, IGameStateManager {
         Messenger<LevelConfiguration>.RemoveListener(GameEvents.InitActionStateEvent, SetUpActionState);
     }
 
-    private void OnAwake() {
+    private void Awake() {
         _actionEvents = new List<ActionStateEvents>();
     }
     
