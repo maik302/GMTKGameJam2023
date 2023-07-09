@@ -3,18 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System;
 
 public class StartStateManager : MonoBehaviour, IGameStateManager {
     
+    [Header("Countdown configurations")]
     [SerializeField]
-    [Range(0.5f, 10f)]
-    private float _secondsToWaitForStateChange = 1.0f;
+    private GameObject _countdownOverlayLayer;
+    [SerializeField]
+    private TextMeshProUGUI _countdownText;
+
+    [Header("State configurations")]
     [SerializeField]
     public Slider _heroHealthBar;
     [SerializeField]
     public Slider _enemiesHealthBar;
     [SerializeField]
     private List<GameObject> _monsters;
+    [SerializeField]
+    [Range(1, 5)]
+    private int _countdownSeconds = 3;
+    [SerializeField]
+    [Range(1, 3)]
+    private int _countdownSecondsBetweenChanges = 1;
+    [SerializeField]
+    [Range(0.5f, 10f)]
+    private float _secondsToWaitForStateChange = 1.0f;
 
     private void OnEnable() {
         Messenger<LevelConfiguration>.AddListener(GameEvents.InitStartStateEvent, SetUpStartState);
@@ -25,7 +40,11 @@ public class StartStateManager : MonoBehaviour, IGameStateManager {
     }
 
     public void FinishState() {
-        Messenger.Broadcast(GameEvents.FinishGameStateEvent);
+        void BroadcastFinishStateEvent() {
+            Messenger.Broadcast(GameEvents.FinishGameStateEvent);
+        }
+        
+        this.StartTaskAfter(_secondsToWaitForStateChange, BroadcastFinishStateEvent);
     }
 
     public void StartState() {
@@ -63,7 +82,31 @@ public class StartStateManager : MonoBehaviour, IGameStateManager {
 
         SetUpHeroHealthBar(levelConfiguration);
         SetUpEnemiesConfiguration(levelConfiguration);
+        StartCountdown();
+    }
 
-        this.StartTaskAfter(_secondsToWaitForStateChange, FinishState);
+    private void StartCountdown() {
+        StartCoroutine(
+            ChangeCountDownText(_countdownSeconds, _countdownSecondsBetweenChanges, FinishState)
+        );
+    }
+
+    private IEnumerator ChangeCountDownText(int countdownSeconds, int countdownSecondsBetweenChanges, Action doAfterFinish) {
+        _countdownOverlayLayer.SetActive(true);
+        _countdownText.gameObject.SetActive(true);
+
+        for (int counter = countdownSeconds; counter > 0; counter--) {
+            _countdownText.text = counter.ToString();
+
+            yield return new WaitForSeconds(countdownSecondsBetweenChanges);
+        }
+
+        _countdownText.text = GameTexts.ActionText;
+        yield return new WaitForSeconds(countdownSecondsBetweenChanges);
+
+        _countdownOverlayLayer.SetActive(false);
+        _countdownText.gameObject.SetActive(false);
+
+        doAfterFinish();
     }
 }

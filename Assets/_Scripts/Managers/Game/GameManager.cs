@@ -1,8 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour {
+
+    [Header("General Game Settings")]
+    [SerializeField]
+    private TextMeshProUGUI _currentLevelText;
+    [SerializeField]
+    private GameObject _finishGameUI;
 
     [Header("Game States configuration")]
     [SerializeField]
@@ -18,23 +25,28 @@ public class GameManager : MonoBehaviour {
 
     private void OnEnable() {
         Messenger.AddListener(GameEvents.FinishGameStateEvent, StartNextGameState);
-        Messenger.AddListener(GameEvents.FinishUpdateStateOkEvent, FinishUpdateStateOkHandler);
-        Messenger.AddListener(GameEvents.FinishUpdateStateKoEvent, FinishUpdateStateKoHandler);
+        Messenger<float>.AddListener(GameEvents.FinishUpdateStateOkEvent, FinishUpdateStateOkHandler);
+        Messenger<float>.AddListener(GameEvents.FinishUpdateStateKoEvent, FinishUpdateStateKoHandler);
     }
 
     private void OnDisable() {
         Messenger.RemoveListener(GameEvents.FinishGameStateEvent, StartNextGameState);
-        Messenger.RemoveListener(GameEvents.FinishUpdateStateOkEvent, FinishUpdateStateOkHandler);
-        Messenger.RemoveListener(GameEvents.FinishUpdateStateKoEvent, FinishUpdateStateKoHandler);
+        Messenger<float>.RemoveListener(GameEvents.FinishUpdateStateOkEvent, FinishUpdateStateOkHandler);
+        Messenger<float>.RemoveListener(GameEvents.FinishUpdateStateKoEvent, FinishUpdateStateKoHandler);
     }
 
     private void Start() {
+        _finishGameUI.SetActive(false);
         _currentGameState = GameStates.INIT;
         _currentLevelIndex = 0;
         this.StartTaskAfter(_secondsBetweenStates, StartNextGameState);
     }
 
     private void StartNextGameState() {
+        void UpdateCurrentLevelText() {
+            _currentLevelText.text = GameTexts.LevelText + (_currentLevelIndex + 1);
+        }
+
         GameStates GetNextGameState() {
             return _currentGameState switch {
                 GameStates.INIT => GameStates.START,
@@ -48,6 +60,7 @@ public class GameManager : MonoBehaviour {
             };
         }
 
+        UpdateCurrentLevelText();
         var nextGameState = GetNextGameState();
         switch (nextGameState) {
             case GameStates.START:
@@ -74,16 +87,26 @@ public class GameManager : MonoBehaviour {
         Messenger<LevelConfiguration>.Broadcast(GameStateUtils.GetInitGameStateEvent(gameState), levelConfiguration);
     }
 
-    private void FinishUpdateStateOkHandler() {
+    private void FinishUpdateStateOkHandler(float elapsedTimeInSeconds) {
+        void ChangeToFinishOkGameState(float elapsedTimeInSeconds, int currentLevelIndex) {
+            _currentGameState = GameStates.FINISH_OK;
+            Messenger<float, int>.Broadcast(GameStateUtils.GetInitGameStateEvent(GameStates.FINISH_OK), elapsedTimeInSeconds, currentLevelIndex);
+        }
+
         _currentLevelIndex++;
         if (_currentLevelIndex >= _levels.Count) {
-            ChangeGameState(GameStates.FINISH_OK);
+            ChangeToFinishOkGameState(elapsedTimeInSeconds, _currentLevelIndex);
         } else {
             StartNextGameState();
         }
     }
 
-    private void FinishUpdateStateKoHandler() {
-        ChangeGameState(GameStates.FINISH_KO);
+    private void FinishUpdateStateKoHandler(float elapsedTimeInSeconds) {
+        void ChangeToFinishKoGameState(float elapsedTimeInSeconds, int currentLevelIndex) {
+            _currentGameState = GameStates.FINISH_KO;
+            Messenger<float, int>.Broadcast(GameStateUtils.GetInitGameStateEvent(GameStates.FINISH_KO), elapsedTimeInSeconds, currentLevelIndex);
+        }
+
+        ChangeToFinishKoGameState(elapsedTimeInSeconds, _currentLevelIndex);
     }
 }

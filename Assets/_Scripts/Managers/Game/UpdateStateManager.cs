@@ -11,13 +11,14 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
 
     [Header("Outer game elements")]
     [SerializeField]
-    private GameObject _outerGameElementsContainer;
+    private GameObject _outerGameOverlayLayer;
+    [SerializeField]
+    private GameObject _player;
+
     [SerializeField]
     private TextMeshProUGUI _elapsedTimeCounter;
     [SerializeField]
     private OuterGameSpritesHolder _outerGameSpritesHolder;
-    [SerializeField]
-    private GameObject _player;
     [SerializeField]
     private Slider _heroHealthBar;
     [SerializeField]
@@ -39,7 +40,7 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
         Messenger<LevelConfiguration>.RemoveListener(GameEvents.InitUpdateStateEvent, SetUpUpdateState);
     }
 
-    private void OnAwake() {
+    private void Awake() {
         _elapsedTimeInSeconds = 0f;
     }
 
@@ -52,22 +53,24 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
 
     public void FinishState() {
         ReturnToIdle();
-        HideOverlayLayer();
+        HideOuterGameElements();
         _isStateActive = false;
     }
 
-    private void HideOverlayLayer() {
-        _outerGameElementsContainer.SetActive(false);
+    private void HideOuterGameElements() {
+        _outerGameOverlayLayer.SetActive(false);
+        _player.SetActive(false);
     }
 
     public void StartState() {
         _isStateActive = true;
         _currentActionIndex = 0;
-        BringOverlayLayerUpfront();
+        ShowOuterGameElements();
     }
 
-    private void BringOverlayLayerUpfront() {
-        _outerGameElementsContainer.SetActive(true);
+    private void ShowOuterGameElements() {
+        _outerGameOverlayLayer.SetActive(true);
+        _player.SetActive(true);
     }
 
     private void SetUpUpdateState(LevelConfiguration levelConfiguration) {
@@ -146,12 +149,12 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
 
     private void FinishUpdateStateOk() {
         FinishState();
-        Messenger.Broadcast(GameEvents.FinishUpdateStateOkEvent);
+        Messenger<float>.Broadcast(GameEvents.FinishUpdateStateOkEvent, _elapsedTimeInSeconds);
     }
 
     private void FinishUpdateStateKo() {
         FinishState();
-        Messenger.Broadcast(GameEvents.FinishUpdateStateKoEvent);
+        Messenger<float>.Broadcast(GameEvents.FinishUpdateStateKoEvent, _elapsedTimeInSeconds);
     }
 
     private void ChangePlayerSprite(Sprite sprite) {
