@@ -522,7 +522,95 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4eb74df594ed814f8344cbc5ea3de0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sounds: []
+  Sounds:
+  - Name: BackgroundMusic
+    AudioClip: {fileID: 8300000, guid: 4ca583ced9eb0254c9e26067a8d891c3, type: 3}
+    Volume: 0.55
+    Pitch: 1
+    Loop: 1
+    AudioSource: {fileID: 0}
+    IsPlaying: 0
+    IsBGM: 1
+  - Name: OneAnnouncement
+    AudioClip: {fileID: 8300000, guid: 19ce91781356e244999a59a4aae56b0c, type: 3}
+    Volume: 0.8
+    Pitch: 1.5
+    Loop: 0
+    AudioSource: {fileID: 0}
+    IsPlaying: 0
+    IsBGM: 0
+  - Name: TwoAnnouncement
+    AudioClip: {fileID: 8300000, guid: 0757a657615329645be1284787907282, type: 3}
+    Volume: 0.8
+    Pitch: 1.5
+    Loop: 0
+    AudioSource: {fileID: 0}
+    IsPlaying: 0
+    IsBGM: 0
+  - Name: ThreeAnnouncement
+    AudioClip: {fileID: 8300000, guid: f21be1ac2594d89458d0b42d9da28768, type: 3}
+    Volume: 0.8
+    Pitch: 1.5
+    Loop: 0
+    AudioSource: {fileID: 0}
+    IsPlaying: 0
+    IsBGM: 0
+  - Name: HeroDamageSFX
+    AudioClip: {fileID: 8300000, guid: a9c25b1d2c08f254f97b0c68b70def61, type: 3}
+    Volume: 0.7
+    Pitch: 1
+    Loop: 0
+    AudioSource: {fileID: 0}
+    IsPlaying: 0
+    IsBGM: 0
+  - Name: HeroHealSFX
+    AudioClip: {fileID: 8300000, guid: ffb1d6d5789bca24d89b669948efc8d1, type: 3}
+    Volume: 0.7
+    Pitch: 1
+    Loop: 0
+    AudioSource: {fileID: 0}
+    IsPlaying: 0
+    IsBGM: 0
+  - Name: MonsterDamageSFX
+    AudioClip: {fileID: 8300000, guid: c6cf98a4a62adc74e8ef83d4f093397f, type: 3}
+    Volume: 0.7
+    Pitch: 1
+    Loop: 0
+    AudioSource: {fileID: 0}
+    IsPlaying: 0
+    IsBGM: 0
+  - Name: MonsterDeathSFX
+    AudioClip: {fileID: 8300000, guid: 6753819969d7a9e42963fdcdfaa278be, type: 3}
+    Volume: 0.7
+    Pitch: 1
+    Loop: 0
+    AudioSource: {fileID: 0}
+    IsPlaying: 0
+    IsBGM: 0
+  - Name: StartStateInitSFX
+    AudioClip: {fileID: 8300000, guid: 59a56c3d5d99bac48b861b06a67c8683, type: 3}
+    Volume: 0.5
+    Pitch: 1.5
+    Loop: 0
+    AudioSource: {fileID: 0}
+    IsPlaying: 0
+    IsBGM: 0
+  - Name: YouLoseAnnouncement
+    AudioClip: {fileID: 8300000, guid: 3962a6c10d153da47b872a69cf1aa051, type: 3}
+    Volume: 0.8
+    Pitch: 1.5
+    Loop: 0
+    AudioSource: {fileID: 0}
+    IsPlaying: 0
+    IsBGM: 0
+  - Name: YouWinAnnouncement
+    AudioClip: {fileID: 8300000, guid: 21ebe876022b97f4083fba065132997a, type: 3}
+    Volume: 0.8
+    Pitch: 1.5
+    Loop: 0
+    AudioSource: {fileID: 0}
+    IsPlaying: 0
+    IsBGM: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
