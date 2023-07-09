@@ -99,6 +99,9 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
     private void SetUpUpdateState(LevelConfiguration levelConfiguration) {
         _actionEvents = levelConfiguration.ActionEvents;
         _playerLivesCounter = _playerLives.Count;
+        foreach (var playerLife in _playerLives) {
+            playerLife.SetActive(true);            
+        }
         StartState();
     }
 
@@ -177,13 +180,13 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
     }
 
     private void RemoveAPlayerLife() {
-        _playerLivesCounter--;
         if (_playerLivesCounter > 0) {
             var activePlayerLives = _playerLives.Where(life => life.activeSelf).ToList();
             if (activePlayerLives.Count > 0) {
                 activePlayerLives[activePlayerLives.Count - 1].SetActive(false);
             }
         }
+        _playerLivesCounter--;
     }
 
     private void FinishUpdateStateOk() {
