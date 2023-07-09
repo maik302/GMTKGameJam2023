@@ -3742,16 +3742,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentLevelText: {fileID: 589547899}
   _finishGameUI: {fileID: 836898535}
-  _secondsBetweenStates: 1
+  _secondsBetweenStates: 1.25
   _levels:
   - ActionEvents: 03000000
     TimeBetweenEachAction: 1
     HeroMaxHP: 5
-  - ActionEvents: 00000000
+  - ActionEvents: 0000000003000000
     TimeBetweenEachAction: 1
     HeroMaxHP: 5
-  - ActionEvents: 01000000
+  - ActionEvents: 00000000010000000300000003000000
     TimeBetweenEachAction: 1
+    HeroMaxHP: 5
+  - ActionEvents: 010000000200000003000000
+    TimeBetweenEachAction: 1
+    HeroMaxHP: 5
+  - ActionEvents: 000000000000000003000000010000000200000003000000
+    TimeBetweenEachAction: 1
+    HeroMaxHP: 5
+  - ActionEvents: 010000000200000003000000
+    TimeBetweenEachAction: 0.5
+    HeroMaxHP: 5
+  - ActionEvents: 02000000020000000000000000000000030000000100000003000000
+    TimeBetweenEachAction: 0.5
+    HeroMaxHP: 5
+  - ActionEvents: 0100000002000000000000000000000003000000
+    TimeBetweenEachAction: 0.5
+    HeroMaxHP: 5
+  - ActionEvents: 03000000010000000100000002000000010000000100000003000000
+    TimeBetweenEachAction: 0.5
+    HeroMaxHP: 5
+  - ActionEvents: 010000000200000002000000000000000100000003000000
+    TimeBetweenEachAction: 0.3
     HeroMaxHP: 5
   - ActionEvents: 02000000
     TimeBetweenEachAction: 1
