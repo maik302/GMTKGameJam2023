@@ -60,6 +60,7 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
     private void HideOuterGameElements() {
         _outerGameOverlayLayer.SetActive(false);
         _player.SetActive(false);
+        _elapsedTimeCounter.gameObject.SetActive(false);
     }
 
     public void StartState() {
@@ -71,6 +72,7 @@ public class UpdateStateManager : MonoBehaviour, IGameStateManager {
     private void ShowOuterGameElements() {
         _outerGameOverlayLayer.SetActive(true);
         _player.SetActive(true);
+        _elapsedTimeCounter.gameObject.SetActive(true);
     }
 
     private void SetUpUpdateState(LevelConfiguration levelConfiguration) {
